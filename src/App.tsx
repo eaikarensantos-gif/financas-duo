@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Dashboard from './components/Dashboard'
 import Historico from './components/Historico'
+import Relatorios from './components/Relatorios'
 import Auth from './components/Auth'
 import type { Transaction } from './types'
 
@@ -112,11 +113,7 @@ export default function App() {
         <main className="flex-1 overflow-y-auto">
           {view === 'dashboard' && <Dashboard />}
           {view === 'historico' && <Historico />}
-          {view === 'relatorios' && (
-            <div className="flex items-center justify-center h-96 text-gray-400 text-sm">
-              Relatórios detalhados — em desenvolvimento
-            </div>
-          )}
+          {view === 'relatorios' && <Relatorios />}
         </main>
       </div>
 
