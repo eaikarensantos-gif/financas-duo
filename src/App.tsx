@@ -15,7 +15,7 @@ export default function App() {
   const [view, setView] = useState<View>('dashboard')
   const [user, setUser] = useState<{ id: string; email: string } | null>(null)
   const [loading, setLoading] = useState(true)
-  const { setTransactions, clearData } = useFinanceStore()
+  const { setTransactions, clearData, activeProfile, setProfile } = useFinanceStore()
 
   // ── Check auth status on mount ────────────────────────────────────────────
   useEffect(() => {
@@ -103,8 +103,8 @@ export default function App() {
 
       <div className="flex-1 flex flex-col">
         <Header
-          activeProfile="PF"
-          onProfileChange={() => {}}
+          activeProfile={activeProfile}
+          onProfileChange={setProfile}
           onUpload={() => alert('Upload de extrato em breve!')}
         />
 
