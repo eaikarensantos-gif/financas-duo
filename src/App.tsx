@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard'
 import Historico from './components/Historico'
 import Relatorios from './components/Relatorios'
 import Auth from './components/Auth'
+import UserMenu from './components/UserMenu'
 import type { Transaction } from './types'
 
 type View = 'dashboard' | 'historico' | 'relatorios'
@@ -118,8 +119,12 @@ export default function App() {
       </div>
 
       {/* User menu (floating) */}
-      <div className="absolute top-4 right-4 bg-white rounded-lg border border-gray-100 p-3 shadow-sm">
-        <Auth user={user} onAuthChange={() => setUser(null)} />
+      <div className="absolute top-4 right-4">
+        {user ? (
+          <UserMenu user={user} onLogout={() => setUser(null)} />
+        ) : (
+          <Auth user={user} onAuthChange={() => {}} />
+        )}
       </div>
     </div>
   )
