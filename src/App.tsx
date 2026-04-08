@@ -105,7 +105,7 @@ export default function App() {
         <Header
           activeProfile={activeProfile}
           onProfileChange={setProfile}
-          onUpload={() => alert('Upload de extrato em breve!')}
+          onUpload={() => {}}
         />
 
         <main className="flex-1">
