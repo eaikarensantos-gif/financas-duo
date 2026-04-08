@@ -6,6 +6,7 @@ import { useFinanceStore } from './store/useFinanceStore'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Dashboard from './components/Dashboard'
+import Historico from './components/Historico'
 import Auth from './components/Auth'
 import type { Transaction } from './types'
 
@@ -108,13 +109,9 @@ export default function App() {
           onUpload={() => {}}
         />
 
-        <main className="flex-1">
+        <main className="flex-1 overflow-y-auto">
           {view === 'dashboard' && <Dashboard />}
-          {view === 'historico' && (
-            <div className="flex items-center justify-center h-96 text-gray-400 text-sm">
-              Histórico completo — em desenvolvimento
-            </div>
-          )}
+          {view === 'historico' && <Historico />}
           {view === 'relatorios' && (
             <div className="flex items-center justify-center h-96 text-gray-400 text-sm">
               Relatórios detalhados — em desenvolvimento
