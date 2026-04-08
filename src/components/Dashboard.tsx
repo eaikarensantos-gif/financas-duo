@@ -5,6 +5,7 @@ import SummaryCard from './SummaryCard'
 import TransactionItem from './TransactionItem'
 import DonutChart from './DonutChart'
 import AITipCard from './AITipCard'
+import TransactionModal from './TransactionModal'
 import { availableMonths, monthName } from '../utils/format'
 
 export default function Dashboard() {
@@ -24,6 +25,7 @@ export default function Dashboard() {
 
   const [showMonthMenu, setShowMonthMenu] = useState(false)
   const [showTypeMenu, setShowTypeMenu] = useState(false)
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false)
 
   const filtered    = getFiltered()
   const summary     = getMonthlySummary()
@@ -127,7 +129,10 @@ export default function Dashboard() {
               </div>
 
               {/* Add button */}
-              <button className="w-7 h-7 bg-indigo-600 hover:bg-indigo-700 rounded-full flex items-center justify-center transition-colors">
+              <button
+                onClick={() => setIsTransactionModalOpen(true)}
+                className="w-7 h-7 bg-indigo-600 hover:bg-indigo-700 rounded-full flex items-center justify-center transition-colors"
+              >
                 <Plus className="w-4 h-4 text-white" />
               </button>
             </div>
@@ -181,6 +186,11 @@ export default function Dashboard() {
           )
         })()}
       </div>
+
+      <TransactionModal
+        isOpen={isTransactionModalOpen}
+        onClose={() => setIsTransactionModalOpen(false)}
+      />
     </div>
   )
 }
