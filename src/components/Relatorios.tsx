@@ -122,12 +122,12 @@ export default function Relatorios() {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Gastos por Categoria</h2>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
-                <Pie data={categoryData} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: R$ ${value.toFixed(0)}`} outerRadius={100} fill="#8884d8" dataKey="value">
+                <Pie data={categoryData} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: R$ ${Number(value).toFixed(0)}`} outerRadius={100} fill="#8884d8" dataKey="value">
                   {categoryData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => `R$ ${value.toFixed(2)}`} />
+                <Tooltip formatter={(value) => `R$ ${Number(value).toFixed(2)}`} />
               </PieChart>
             </ResponsiveContainer>
           </div>

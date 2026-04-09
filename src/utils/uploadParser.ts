@@ -58,7 +58,7 @@ function parseAmount(amountStr: string): number {
   return parseFloat(cleaned) || 0
 }
 
-function parseCSV(content: string, profile: Profile): Partial<Transaction>[] {
+function parseCSV(content: string, profile: Profile): Promise<Partial<Transaction>[]> {
   return new Promise((resolve, reject) => {
     Papa.parse(content, {
       header: false,
@@ -93,7 +93,7 @@ function parseCSV(content: string, profile: Profile): Partial<Transaction>[] {
   })
 }
 
-function parseExcel(file: File, profile: Profile): Partial<Transaction>[] {
+function parseExcel(file: File, profile: Profile): Promise<Partial<Transaction>[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 
