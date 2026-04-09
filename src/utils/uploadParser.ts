@@ -1,9 +1,10 @@
 import Papa from 'papaparse'
 import * as XLSX from 'xlsx'
 import * as pdfjsLib from 'pdfjs-dist'
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 import type { Transaction, Profile } from '../types'
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 const categoryKeywords: Record<string, string> = {
   'alimenta|super|mercar|açaí|restaur|café|almoço|jantar': 'Alimentação',
