@@ -88,7 +88,7 @@ function parseCSV(content: string, profile: Profile): Promise<Partial<Transactio
 
         resolve(transactions)
       },
-      error: (error) => reject(new Error(`Erro ao processar CSV: ${error.message}`)),
+      error: (error: Error) => reject(new Error(`Erro ao processar CSV: ${error.message}`)),
     })
   })
 }
