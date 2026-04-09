@@ -51,10 +51,16 @@ function parseDate(dateStr: string): string {
 }
 
 function parseAmount(amountStr: string): number {
-  const cleaned = amountStr
-    .replace(/[R$\s]/g, '')
-    .replace(/\./g, '') // Remove thousand separators
-    .replace(',', '.')
+  let cleaned = amountStr.replace(/[R$\s]/g, '')
+
+  if (cleaned.includes(',') && cleaned.includes('.')) {
+    // Brazilian format: 5.000,00 → dots are thousands, comma is decimal
+    cleaned = cleaned.replace(/\./g, '').replace(',', '.')
+  } else if (cleaned.includes(',')) {
+    // Comma-only: 5000,00 → comma is decimal
+    cleaned = cleaned.replace(',', '.')
+  }
+  // Dot-only: 5000.00 → dot is already decimal, no change needed
 
   return parseFloat(cleaned) || 0
 }
