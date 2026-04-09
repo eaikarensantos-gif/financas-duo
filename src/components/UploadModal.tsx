@@ -14,7 +14,7 @@ export default function UploadModal({ isOpen, onClose }: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const [preview, setPreview] = useState<Partial<Transaction>[]>([])
   const [error, setError] = useState<string>('')
-  const { addTransaction, activeProfile } = useFinanceStore()
+  const { importTransactions, activeProfile } = useFinanceStore()
 
   if (!isOpen) return null
 
@@ -39,9 +39,7 @@ export default function UploadModal({ isOpen, onClose }: Props) {
   const handleImport = async () => {
     setIsLoading(true)
     try {
-      for (const t of preview) {
-        await addTransaction(t as Omit<Transaction, 'id'>)
-      }
+      await importTransactions(preview as Omit<Transaction, 'id'>[])
       setPreview([])
       onClose()
     } catch (err) {

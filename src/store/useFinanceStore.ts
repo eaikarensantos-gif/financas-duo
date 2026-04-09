@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import type { Profile, Transaction, MonthlySummary, CategorySummary, AITip } from '../types'
 import { categoryColors } from '../data/mockData'
 import { db, auth } from '../lib/firebase'
-import { collection, addDoc, deleteDoc, doc, query, where, orderBy, getDocs } from 'firebase/firestore'
+import { collection, addDoc, deleteDoc, doc, query, where, orderBy, getDocs, writeBatch } from 'firebase/firestore'
 
 interface FinanceStore {
   // ── Profile ───────────────────────────────────────────────────────────────
@@ -19,6 +19,7 @@ interface FinanceStore {
   transactions: Transaction[]
   setTransactions: (t: Transaction[]) => void
   addTransaction: (t: Omit<Transaction, 'id'>) => Promise<void>
+  importTransactions: (items: Omit<Transaction, 'id'>[]) => Promise<void>
   removeTransaction: (id: string) => Promise<void>
   clearData: () => void
   isLoading: boolean
@@ -67,6 +68,39 @@ export const useFinanceStore = create<FinanceStore>((set, get) => ({
       set({ transactions: data })
     } catch (err) {
       console.error('Error adding transaction:', err)
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  importTransactions: async (items) => {
+    set({ isLoading: true })
+    try {
+      const user = auth.currentUser
+      if (!user) throw new Error('User not authenticated')
+
+      const now = new Date().toISOString()
+      const colRef = collection(db, 'transactions')
+
+      // Firestore batches support max 500 operations
+      for (let i = 0; i < items.length; i += 400) {
+        const batch = writeBatch(db)
+        const chunk = items.slice(i, i + 400)
+        for (const t of chunk) {
+          const ref = doc(colRef)
+          batch.set(ref, { ...t, userId: user.uid, createdAt: now, updatedAt: now })
+        }
+        await batch.commit()
+      }
+
+      // Single refetch at the end
+      const q = query(colRef, where('userId', '==', user.uid), orderBy('date', 'desc'))
+      const snapshot = await getDocs(q)
+      const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() })) as Transaction[]
+      set({ transactions: data })
+    } catch (err) {
+      console.error('Error importing transactions:', err)
+      throw err
     } finally {
       set({ isLoading: false })
     }
